@@ -13,3 +13,24 @@ File "<stdin>", line 20, in <module>
 
 Сделать возможным данный механизм
 """
+
+
+class InitAttr(type):
+
+    def __new__(mcs, name, bases, attrs):
+        return super().__new__(mcs, name, bases, attrs)
+
+    def __call__(self, *args, **kwargs):
+        new_object = super().__call__(*args)
+        for key in kwargs:
+            setattr(new_object, key, kwargs[key])
+        return new_object
+
+
+class Man(metaclass=InitAttr):
+    pass
+
+
+me = Man(height=180, weight=80)
+print(me.height)
+print(me.weight)
